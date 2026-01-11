@@ -3,36 +3,53 @@ from pathlib import Path
 import shutil
 
 
+
 CATEGORIES = {
-    "IMAGES": [".png", ".gif", ".bmp", ".jpeg",],
-    "VIDEO": [".mp4", ".avi", ".mov", ".mkv",],
-    "DOCUMENTS": [".pdf", ".docx", ".txt", ".xlsx",],
-    "COMPRESSED": [".zip", ".rar", ".tar", ".gz",],
-    "PROGRAMS": [".exe", ".msi", ".bat", ".sh", ".dmg"],
+    
+    "IMAGES":{ 
+        "ext": [".png", ".gif", ".bmp", ".jpeg", ".jpg", ".aseprite", ".heic" ],
+        "destination": Path("~/Downloads/dl-images").expanduser(),
+              
+     },
+
+     "VIDEO": {
+         "ext": [".mp4", ".avi", ".mov", ".mkv",],
+         "destination": Path("~/Downloads/dl-video").expanduser() 
+     },
+
+     "DOCUMENTS": {
+         "ext": [".pdf", ".docx", ".txt", ".xlsx", ".rtf", ".md"],
+         "destination": Path("~/Downloads/dl-compressed").expanduser()
+     },
+
+     "COMPRESSED": {
+         "ext": [".zip", ".rar", ".tar", ".gz",],
+         "destination": Path("~/Downloads/dl-compressed").expanduser()
+     },
+    
+     "PROGRAMS":{
+         "ext": [".exe", ".msi", ".bat", ".sh", ".dmg", ".app"],
+         "destination": Path("~/Downloads/dl-programs").expanduser()
+     }
 
  }
 
-img_pth = Path("~/Downloads/dl-images")
-video_pth = Path("~/Downloads/dl-video")
-documents_pth = Path("~/Downloads/dl-docs")
-compressed_pth = Path("~/Downloads/dl-compressed")
-programs_pth = Path("~/Downloads/dl-programs")
 
-pathsource = Path("~/Downloads")
-
+pathsource = Path("~/Downloads").expanduser()
 
 def sort():
-    for file in pathsource:
-        if file.suffix in CATEGORIES["IMAGES"]:
-              shutil.move(pathsource, img_pth)
-        elif file.suffix in CATEGORIES["VIDEO"]:
-             shutil.move(pathsource, video_pth)
-        elif file.suffix in CATEGORIES["DOCUMENTS"]:
-             shutil.move(pathsource, documents_pth)
-        elif file.suffix in CATEGORIES["COMPRESSED"]:
-             shutil.move(pathsource, compressed_pth)
-        elif file.suffix in CATEGORIES["PROGRAMS"]:
-            shutil.move(pathsource, programs_pth)
-        else:
-             continue
-                     
+    for file in pathsource.iterdir():
+          if file.is_file():
+               for type in CATEGORIES:
+                    if file.suffix in CATEGORIES[type]["ext"]:
+                         shutil.move(file, CATEGORIES[type]["destination"])
+                         break
+               else:
+                   continue
+          else:
+               continue
+                         
+
+
+if __name__ == "__main__":
+    sort()
