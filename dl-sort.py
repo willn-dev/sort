@@ -19,7 +19,7 @@ CATEGORIES = {
 
      "DOCUMENTS": {
          "ext": [".pdf", ".docx", ".txt", ".xlsx", ".rtf", ".md"],
-         "destination": Path("~/Downloads/dl-compressed").expanduser()
+         "destination": Path("~/Downloads/dl-docs").expanduser()
      },
 
      "COMPRESSED": {
@@ -40,14 +40,10 @@ pathsource = Path("~/Downloads").expanduser()
 def sort():
     for file in pathsource.iterdir():
           if file.is_file():
-               for type in CATEGORIES:
-                    if file.suffix in CATEGORIES[type]["ext"]:
-                         shutil.move(file, CATEGORIES[type]["destination"])
+               for category in CATEGORIES:
+                    if file.suffix in CATEGORIES[category]["ext"]:
+                         shutil.move(file, CATEGORIES[category]["destination"])
                          break
-               else:
-                   continue
-          else:
-               continue
                          
 
 
